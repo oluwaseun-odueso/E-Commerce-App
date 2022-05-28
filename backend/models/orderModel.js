@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 
 const orderSchema = mongoose.Schema({
@@ -18,11 +18,14 @@ const orderSchema = mongoose.Schema({
         type: Number,
         require: [true, "Please add unit_price"]
     },
+    total_price: {
+        type: Number,
+        require: [true, "Please add total_price"]
+    },
     date: {
         type: Date,
-        require: [true, "Please add a date"],
         default: Date.now
     }
-})
+});
 
 module.exports = mongoose.model('Orders', orderSchema)

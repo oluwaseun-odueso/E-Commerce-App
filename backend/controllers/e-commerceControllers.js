@@ -14,13 +14,20 @@ const getOrders = asyncHandler(async (req, res) => {
 // @route   POST/api/e-commerce
 // @access  Private
 const addToOrder = asyncHandler(async (req, res) => {
-    if (!req.body.text) {
+    console.log(req.body)
+    if (!req.body.user_id && !req.body.product_id && !req.body.quantity && !req.body.unit_price && !req.body.total_price && !req.body.date) {
         res.status(400)
-        throw new Error("Please add an order")
+        throw new Error("Please add all fields")
     }
 
+
     const order = await Order.create({
-        text: req.body.text
+        user_id: req.body.user_id,
+        product_id: req.body.product_id,
+        quantity: req.body.quantity,
+        unit_price: req.body.unit_price,
+        total_price: req.body.total_price,
+        date: req.body.date
     })
 
     res.status(200).json(order)
