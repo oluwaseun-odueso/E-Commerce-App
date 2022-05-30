@@ -14,7 +14,6 @@ const getOrders = asyncHandler(async (req, res) => {
 // @route   POST/api/e-commerce
 // @access  Private
 const addToOrder = asyncHandler(async (req, res) => {
-    console.log(req.body)
     if (!req.body.user_id && !req.body.product_id && !req.body.quantity && !req.body.unit_price && !req.body.total_price && !req.body.date) {
         res.status(400)
         throw new Error("Please add all fields")
@@ -55,8 +54,16 @@ const updateOrder = asyncHandler(async (req, res) => {
 // @route   DELETE/api/e-commerce/:id
 // @access  Private
 const deleteOrder = asyncHandler(async (req, res) => {
-    
-    res.status(200).json({ message: `Delete goal ${req.params.id}` })
+    const order = await Order.findById(req.params.id)
+
+    if(!order) {
+        res.status(400)
+        throw new Error('Order not found')
+    }
+
+    const deletedOrder = await order.remove()
+
+    res.status(200).json(deletedOrder)
 })
 
 const controls = {

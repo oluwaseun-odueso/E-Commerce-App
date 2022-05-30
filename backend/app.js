@@ -11,7 +11,9 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use('/api/e-commerce', require('./routes/e-commerceRoutes'))
+app.use('/e-commerce/orders', require('./routes/orderRoutes'))
+app.use('/e-commerce/users', require('./routes/orderRoutes'))
+
 
 app.get('/', (req, res) => {
     res.status(200).json({ message: "Welcome to the E-Commerce home page" })

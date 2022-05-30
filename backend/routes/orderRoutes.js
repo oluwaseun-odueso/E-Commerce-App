@@ -5,7 +5,7 @@ const {
     addToOrder, 
     updateOrder, 
     deleteOrder
-} = require('../controllers/e-commerceControllers')
+} = require('../controllers/orderController')
 
 router.route('/').get(getOrders).post(addToOrder)
 
