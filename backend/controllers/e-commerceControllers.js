@@ -37,14 +37,26 @@ const addToOrder = asyncHandler(async (req, res) => {
 // @route   PUT/api/e-commerce/:id
 // @access  Private
 const updateOrder = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: `Update order ${req.params.id}` })
+    const order = await Order.findById(req.params.id)
+
+    if(!order) {
+        res.status(400)
+        throw new Error('Order not found')
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+    })
+
+    res.status(200).json(updatedOrder)
 })
 
 // @desc    Delete user orders
 // @route   DELETE/api/e-commerce/:id
 // @access  Private
 const deleteOrder = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: `Delete order ${req.params.id}` })
+    
+    res.status(200).json({ message: `Delete goal ${req.params.id}` })
 })
 
 const controls = {
