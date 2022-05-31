@@ -13,7 +13,7 @@ const getOrders = asyncHandler(async (req, res) => {
 // @desc    Set user orders
 // @route   POST/api/e-commerce
 // @access  Private
-const addToOrder = asyncHandler(async (req, res) => {
+const addToOrder = async (req, res) => {
     if (!req.body.user_id && !req.body.product_id && !req.body.quantity && !req.body.unit_price && !req.body.total_price && !req.body.date) {
         res.status(400)
         throw new Error("Please add all fields")
@@ -30,7 +30,7 @@ const addToOrder = asyncHandler(async (req, res) => {
     })
 
     res.status(200).json(order)
-})
+}
  
 // @desc    Update user order
 // @route   PUT/api/e-commerce/:id

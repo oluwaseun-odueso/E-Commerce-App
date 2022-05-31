@@ -3,37 +3,44 @@ const mongoose = require('mongoose')
 const userSchema = mongoose.Schema({
     username: {
         type: String,
-        require: [true, "Please create a username"]
+        required: [true, "Please create a username"]
     },
     first_name: {
         type: String,
-        require: [true, "Please add a first_name"]
+        required: [true, "Please add a first_name"]
     },
     last_name: {
         type: String,
-        require: [true, "Please add a username"]
+        required: [true, "Please add a username"]
     },
     email: {
         type: String,
-        require: [true, "Please add a username"],
+        required: [true, "Please add a username"],
         unique: true
     },
     address: {
         type: String,
-        require: [true, "Please add a username"]
+        required: [true, "Please add a username"]
     },
     city: {
         type: String,
-        require: [true, "Please add a username"]
+        required: [true, "Please add a username"]
     },
     state: {
         type: String,
-        require: [true, "Please add a username"]
+        required: [true, "Please add a username"]
     },
     phone_number: {
         type: Number,
-        require: [true, "Please add a username"]
+        required: [true, "Please add a username"]
+    },
+    is_admin: {
+        type: Boolean,
+        required: [true]
     }
+},
+{
+    timestamps: true
 })
 
 module.exports = mongoose.model('User', userSchema)
