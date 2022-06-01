@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config()
 const { errorHandler } = require('./middleware/errorMiddleware')
 const connectDB = require('./config/database')
 const orderRoutes = require('./routes/orderRoutes')
+const userRoutes = require('./routes/userRoutes')
 const port = process.env.PORT || 5000
 
 connectDB()
@@ -13,7 +14,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/e-commerce/orders', orderRoutes)
-// app.use('/e-commerce/users', require('./routes/userRoutes'))
+app.use('/e-commerce/users', userRoutes)
 
 
 app.get('/', (req, res) => {

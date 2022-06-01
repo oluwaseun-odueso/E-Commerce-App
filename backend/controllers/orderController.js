@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler')
 const Order = require('../models/orderModel')
 
 // @desc    Get user orders
-// @route   GET/api/e-commerce
+// @route   GET/e-commerce/order
 // @access  Private
 const getOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find()

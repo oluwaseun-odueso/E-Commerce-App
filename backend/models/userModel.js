@@ -22,21 +22,17 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, "Please add a username"]
     },
-    city: {
-        type: String,
-        required: [true, "Please add a username"]
-    },
-    state: {
-        type: String,
-        required: [true, "Please add a username"]
-    },
     phone_number: {
         type: Number,
         required: [true, "Please add a username"]
     },
     is_admin: {
         type: Boolean,
-        required: [true]
+        required: [true, "Please specify if admin"]
+    },
+    password: {
+        type: String,
+        required: [true, "Please add password"]
     }
 },
 {
