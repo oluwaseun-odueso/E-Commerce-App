@@ -16,7 +16,6 @@ function createUser (username, first_name, last_name, email, address, phone_numb
             .then(result => resolve(result))
             .catch(error => reject(error))
     })
-
 }
 
 function checkLoginDetails (email, password) {
@@ -27,4 +26,22 @@ function checkLoginDetails (email, password) {
     })
 }
 
-module.exports = {createUser, checkLoginDetails}
+function getUserById (id) {
+    return new Promise((resolve, reject) => {
+        const user = User.findById(id)
+            .then(result => resolve(result))
+            .catch(error => reject(error))
+    })
+}
+
+function getByIdAndUpdate (id, newDetails, obj) {
+    return new Promise((resolve, reject) => {
+        const newUpdate = User.findByIdAndUpdate(id, newDetails, obj)
+            .then(result => resolve(result))
+            .catch(error => reject(error))
+    })
+}
+
+const exported = {createUser, checkLoginDetails, getUserById, getByIdAndUpdate}
+
+module.exports = exported
