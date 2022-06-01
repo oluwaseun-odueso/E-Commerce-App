@@ -1,3 +1,4 @@
+const res = require('express/lib/response')
 const User = require('../models/userModel')
 
 function createUser (username, first_name, last_name, email, address, phone_number, is_admin, password) {
@@ -12,12 +13,18 @@ function createUser (username, first_name, last_name, email, address, phone_numb
             is_admin: is_admin,
             password: password,
         })
-            .then(user => resolve(user))
+            .then(result => resolve(result))
             .catch(error => reject(error))
     })
-    
+
 }
 
-User.f
+function checkLoginDetails (email, password) {
+    return new Promise((resolve, reject) => {
+        const user = User.find({email: email, password: password})
+            .then(result => resolve(result))
+            .catch(error => reject(error))
+    })
+}
 
-module.exports = {createUser}
+module.exports = {createUser, checkLoginDetails}

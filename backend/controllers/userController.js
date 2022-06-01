@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const {createUser} = require('../functions/userFunctions')
+const {createUser, checkLoginDetails} = require('../functions/userFunctions')
 
 const User = require('../models/userModel')
 
@@ -27,7 +27,7 @@ const addUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     if (req.body.email && req.body.password) {
         try {
-            const result = await User.find({email: req.body.email, password: req.body.password})
+            const result = await checkLoginDetails(req.body.email, req.body.password)
             const user = JSON.parse(JSON.stringify(result[0]))
 
             if (result.length == 1) {
