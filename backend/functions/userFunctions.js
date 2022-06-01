@@ -15,6 +15,9 @@ function createUser (username, first_name, last_name, email, address, phone_numb
             .then(user => resolve(user))
             .catch(error => reject(error))
     })
+    
 }
+
+User.f
 
 module.exports = {createUser}

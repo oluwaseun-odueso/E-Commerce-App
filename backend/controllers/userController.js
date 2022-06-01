@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler')
 const {createUser} = require('../functions/userFunctions')
 
+const User = require('../models/userModel')
+
 // @desc     Create user account
 // @route    POST/users/signUp
 // @access   Private
@@ -22,6 +24,31 @@ const addUser = asyncHandler(async (req, res) => {
     }
 })
 
-const toExport = {addUser}
+const loginUser = asyncHandler(async (req, res) => {
+    if (req.body.email && req.body.password) {
+        try {
+            const result = await User.find({email: req.body.email, password: req.body.password})
+            const user = JSON.parse(JSON.stringify(result[0]))
+
+            if (result.length == 1) {
+                res.status(200).send({
+                    message : "You have successfully logged in.", 
+                    user, 
+                })
+            }
+
+        } catch (error) {
+            res.send({message : error.message})
+        }
+    }
+    else {
+        res.status(400).json({
+            errno: "101",
+            message: "Please enter username and password"
+        })
+    }
+})
+
+const toExport = {addUser, loginUser}
 
 module.exports = toExport
