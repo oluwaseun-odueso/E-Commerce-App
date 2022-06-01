@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const {createUser, checkLoginDetails, getUserById, getByIdAndUpdate} = require('../functions/userFunctions')
+const {createUser, checkLoginDetails, getUserById, getUserByIdAndUpdate} = require('../functions/userFunctions')
 const {generateToken, verifyToken} = require('../config/auth')
 
 
@@ -65,7 +65,7 @@ const updateAccountDetails = async (req, res) => {
                 res.json('User not found')
             }
 
-            const updatedDetails = await getByIdAndUpdate(req.user._id, req.body, {new: true})
+            const updatedDetails = await getUserByIdAndUpdate(req.user._id, req.body, {new: true})
         
             res.status(200).json(updatedDetails)
         } 

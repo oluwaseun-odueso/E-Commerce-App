@@ -34,7 +34,7 @@ function getUserById (id) {
     })
 }
 
-function getByIdAndUpdate (id, newDetails, obj) {
+function getUserByIdAndUpdate (id, newDetails, obj) {
     return new Promise((resolve, reject) => {
         const newUpdate = User.findByIdAndUpdate(id, newDetails, obj)
             .then(result => resolve(result))
@@ -42,6 +42,6 @@ function getByIdAndUpdate (id, newDetails, obj) {
     })
 }
 
-const exported = {createUser, checkLoginDetails, getUserById, getByIdAndUpdate}
+const exported = {createUser, checkLoginDetails, getUserById, getUserByIdAndUpdate}
 
 module.exports = exported
