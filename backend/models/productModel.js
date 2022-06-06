@@ -14,6 +14,9 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: [true, "Please add the unit_price"]
     }
+},
+{
+    timestamps: true
 })
 
-module.exports = mongoose.model('Products', productSchema)
+module.exports = mongoose.model('Product', productSchema)

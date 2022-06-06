@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const {createUser, checkLoginDetails, getUserById, getUserByIdAndUpdate} = require('../functions/userFunctions')
-const {generateToken, verifyToken} = require('../config/auth')
+const {generateToken} = require('../config/auth')
 
 
 // @desc     Create user account

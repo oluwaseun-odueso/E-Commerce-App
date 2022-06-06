@@ -4,6 +4,7 @@ const { errorHandler } = require('./middleware/errorMiddleware')
 const connectDB = require('./config/database')
 const orderRoutes = require('./routes/orderRoutes')
 const userRoutes = require('./routes/userRoutes')
+const productRoutes = require('./routes/productRoutes')
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 5000
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use('/e-commerce/orders', orderRoutes)
 app.use('/e-commerce/users', userRoutes)
+app.use('/e-commerce/products', productRoutes)
 
 
 app.get('/', (req, res) => {
