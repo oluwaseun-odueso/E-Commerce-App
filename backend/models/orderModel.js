@@ -3,12 +3,14 @@ const mongoose = require('mongoose');
 
 const orderSchema = mongoose.Schema({
     user_id: {
-        type: Number,
-        required: [true, "ubiueofn"],
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
     },
     product_id: {
-        type: Number,
-        required: [true, "Please add product_id"]
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Product'
     },
     quantity: {
         type: Number,

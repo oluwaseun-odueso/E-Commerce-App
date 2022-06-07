@@ -1,11 +1,13 @@
 const asyncHandler = require('express-async-handler')
 const Order = require('../models/orderModel')
+const {findAllOrders, createOrder} = require('../functions/orderFunctions')
+
 
 // @desc    Get user orders
 // @route   GET/e-commerce/order
 // @access  Private
 const getOrders = asyncHandler(async (req, res) => {
-    const orders = await Order.find()
+    const orders = await findAllOrders(req.user._id)
 
     res.status(200).json(orders)
 })
@@ -20,21 +22,15 @@ const addToOrder = async (req, res) => {
     }
 
 
-    const order = await Order.create({
-        user_id: req.body.user_id,
-        product_id: req.body.product_id,
-        quantity: req.body.quantity,
-        unit_price: req.body.unit_price,
-        total_price: req.body.total_price,
-        date: req.body.date
-    })
+    const order = await createOrder(req.body.user_id, req.body.product_id, req.body.quantity, req.body.unit_price, req.body.total_price, req.body.date)
 
     res.status(200).json(order)
 }
  
 // @desc    Update user order
-// @route   PUT/api/e-commerce/:id
+// @route   PATCH/api/e-commerce/:id
 // @access  Private
+
 const updateOrder = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id)
 

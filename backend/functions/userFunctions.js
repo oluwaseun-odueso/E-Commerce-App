@@ -26,6 +26,8 @@ function checkLoginDetails (email, password) {
     })
 }
 
+
+
 function getUserById (id) {
     return new Promise((resolve, reject) => {
         const user = User.findById(id)

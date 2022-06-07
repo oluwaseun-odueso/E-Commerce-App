@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const { verifyToken } = require('../config/auth')
+
 const {
     getOrders, 
     addToOrder, 
@@ -7,8 +9,12 @@ const {
     deleteOrder
 } = require('../controllers/orderController')
 
-router.route('/').get(getOrders).post(addToOrder)
+router.get('/', verifyToken, getOrders)
 
-router.route('/:id').put(updateOrder).delete(deleteOrder)
+router.post('/', addToOrder)
+
+router.patch('/:id', verifyToken, updateOrder)
+
+router.delete('/:id', verifyToken, deleteOrder)
 
 module.exports = router

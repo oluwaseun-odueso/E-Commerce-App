@@ -48,13 +48,13 @@ const loginUser = async (req, res) => {
     else {
         res.status(400).json({
             errno: "101",
-            message: "Please enter username and password"
+            message: "Please enter email and password"
         })
     }
 }
 
 // @desc     Update user account details
-// @route    POST/e-commerce/users/login/update_account_details
+// @route    PATCH/e-commerce/users/login/update_account_details
 // @access   Private
 const updateAccountDetails = async (req, res) => {
     if (req.body.username && req.body.first_name && req.body.last_name && req.body.email && req.body.address && req.body.phone_number && req.body.is_admin) {

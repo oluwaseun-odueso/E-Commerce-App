@@ -13,6 +13,6 @@ router.post('/signUp', signUpUser)
 
 router.post('/login', loginUser)
 
-router.post('/update_account_details', verifyToken, updateAccountDetails)
+router.patch('/update_account_details', verifyToken, updateAccountDetails)
 
 module.exports = router
