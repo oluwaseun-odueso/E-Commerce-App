@@ -1,7 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const {
     createUser, 
-    checkLoginDetails, 
     getUserByEmail, 
     getUserById, 
     getUserByIdAndUpdate, 
@@ -29,7 +28,8 @@ const signUpUser = asyncHandler(async (req, res) => {
                     if (checkBothPasswords == true) {
                         const hashedPassword = await hashEnteredPassword(password)
                         await createUser(username, first_name, last_name, email, address, phone_number, is_admin, hashedPassword)
-                        res.status(201).json([{username, first_name, last_name, email, address, phone_number, is_admin, password}])
+                        const userDetails = await getUserByEmail(email)
+                        res.status(201).json(userDetails)
                     }
                     else {
                         res.status(400).json({
@@ -72,7 +72,7 @@ const loginUser = async (req, res) => {
     if (email && password) {
         try {
             const checkEmail = await checkIfEmailExists(email)
-            
+
             if (checkEmail === true) {
                 const hashedPassword = await extractPassword(email)
                 const checkPassword = await checkIfEnteredPasswordEqualsHashed(password, hashedPassword)
@@ -80,6 +80,7 @@ const loginUser = async (req, res) => {
                 if (checkPassword === true) {
                     const userDetails = await getUserByEmail(email)
                     const user = JSON.parse(JSON.stringify(userDetails[0]))
+
 
                     const token = await generateToken(user)
 
@@ -121,18 +122,74 @@ const updateAccountDetails = async (req, res) => {
     const {username, first_name, last_name, email, address, phone_number, is_admin} = req.body
     if (username && first_name && last_name && email && address && phone_number && is_admin) {
         try {
-            const user = await getUserById(req.user._id)
-            if(!user) {
-                res.status(400)
-                res.json('User not found')
+            const user = await getUserByEmail(req.user.email)
+            if (username === user[0].username && email === user[0].email) {
+                await getUserByIdAndUpdate(req.user._id, req.body, {new: true})
+                const updatedDetails = await getUserByEmail(email)                
+                res.status(200).json(updatedDetails)
             }
+            else if (username === user[0].username && email !== user[0].email) {
+                const checkEmail = await checkIfEmailExists(email)
+                console.log('Check Point 3')
 
-            const updatedDetails = await getUserByIdAndUpdate(req.user._id, req.body, {new: true})
-        
-            res.status(200).json(updatedDetails)
+                if (checkEmail === false) {
+                    await getUserByIdAndUpdate(req.user._id, req.body, {new: true})
+                    const updatedDetails = await getUserByEmail(email)
+                    res.status(200).json(updatedDetails)
+                }
+                else {
+                    res.status(400).json({
+                        errno: "111",
+                        message: "Email already exists"
+                    })
+                }
+            }
+            else if (username !== user[0].username && email === user[0].email) {
+                const checkUsername = await checkIfUsernameExists(username)
+
+                if (checkUsername === false) {
+                    await getUserByIdAndUpdate(req.user._id, req.body, {new: true})
+                    const updatedDetails = await getUserByEmail(email)
+                    res.status(200).json(updatedDetails)
+                }
+                else {
+                    res.status(400).json({
+                        errno: "101",
+                        message: "Username already exists"
+                    })
+                }
+            }
+            else {
+                const checkUsername = await checkIfUsernameExists(username)
+                const checkEmail = await checkIfEmailExists(email)
+
+                if (checkUsername === false && checkEmail === false) {
+                    await getUserByIdAndUpdate(req.user._id, req.body, {new: true})
+                    const updatedDetails = await getUserByEmail(email)
+                    res.status(200).json(updatedDetails)
+                }
+                else if (checkUsername === true && checkEmail === false) {
+                    res.status(400).json({
+                        errno: "101",
+                        message: "Username already exists"
+                    })
+                }
+                else if (checkUsername === false && checkEmail === true) {
+                    res.status(400).json({
+                        errno: "121",
+                        message: "Email already exists"
+                    })
+                }
+                else {
+                    res.status(400).json({
+                        errno: "101",
+                        message: "Username and email already exists"
+                    })
+                }
+            }
         } 
         catch (error) {
-            res.send({message : error.message})
+            res.json({message : error.message})
         }
     }
     else {

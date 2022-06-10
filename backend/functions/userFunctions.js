@@ -1,10 +1,10 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt');
-
+const res = require('express/lib/response');
 
 function createUser (username, first_name, last_name, email, address, phone_number, is_admin, password) {
     return new Promise((resolve, reject) => {
-        const user = User.create({username, first_name, last_name, email, address, phone_number, is_admin, password}, (err, docs) => {
+        User.create({username, first_name, last_name, email, address, phone_number, is_admin, password}, (err, docs) => {
             if (err) reject(err)
             resolve(docs)
         })
@@ -22,30 +22,33 @@ function checkLoginDetails (email, password) {
 
 function getUserById (id) {
     return new Promise((resolve, reject) => {
-        User.findById(id, (err, docs) => {
-            if (err) reject(err)
-            resolve(result)
-        })
+    User.find({id}).select("-password")
+        .then(docs => resolve(docs))
+        .catch(error => reject(error))
     })
 }
 
 function getUserByEmail (email) {
     return new Promise((resolve, reject) => {
-        User.find({email}, (err, docs) => {
-            if (err) reject(err)
-            resolve(docs)
-        })
+        User.find({email}).select("-password")
+            .then(docs => resolve(docs))
+            .catch(error => reject(error))
     })
 }
 
+
 function getUserByIdAndUpdate(id, newDetails, obj) {
     return new Promise((resolve, reject) => {
+        // User.find(id, newDetails, obj).select("-password")
+        //     .then(docs => resolve(docs))
+        //     .catch(error => reject(error))
         User.findByIdAndUpdate(id, newDetails, obj, (err, docs) => {
             if (err) reject (err)
             resolve(docs)
         })
     })
 }
+
 
 function checkPasswords(password, confirm_password) {
     return new Promise((resolve, reject) => {
@@ -85,10 +88,6 @@ function extractPassword (email) {
     })
 }
 
-// extractPassword('seunoduez@gmail.com')
-//     .then(result => console.log(result))
-
-
 function checkIfEnteredPasswordEqualsHashed(password, hashedPassword) {
     return new Promise((resolve, reject) => {
         bcrypt.compare(password, hashedPassword, function(err, result) {
@@ -107,17 +106,6 @@ function checkIfEnteredPasswordEqualsHashed(password, hashedPassword) {
 //     }
 // }
 
-
-
-
-// function checkIfEmailExists (email) {
-//     return new Promise((resolve, reject) => {
-//         const user = User.find({email: email})
-//             .then(resolve(true))
-//             .catch(reject(false))
-//     })
-// }
-
 function hashEnteredPassword(password) {
     return new Promise((resolve, reject) => {
         const saltRounds = 10;
@@ -128,10 +116,10 @@ function hashEnteredPassword(password) {
     })
 }
 
-
 const exported = {
     createUser, 
     checkLoginDetails, 
+    updateUserDetails,
     getUserById,
     getUserByEmail, 
     getUserByIdAndUpdate, 
